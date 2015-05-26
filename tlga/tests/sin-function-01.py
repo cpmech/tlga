@@ -8,7 +8,7 @@ from pylab import subplot, plot, show
 from tlga.random    import Seed, Random
 from tlga.operators import SimpleChromo, CrossoverFloat, MutationFloat
 from tlga.output    import PrintPop, Gll
-from tlga.solver    import evolve
+from tlga.solver    import Evolve
 
 # initialise random numbers generator
 Seed(1234) # use a fixed seed, so every time we run this code we will get the same results
@@ -28,7 +28,7 @@ def oFcn(c):
 # input data
 ninds  = 10    # number of individuals: population size
 nbases = 5     # number of bases in chromosome
-ngen   = 10    # number of generations
+ngen   = 5     # number of generations
 pc     = 0.8   # probability of crossover
 pm     = 0.01  # probability of mutation
 elite  = 1     # use elitism
@@ -51,14 +51,14 @@ PrintPop(C, Y, xFcn, showC=True)
 subplot(2, 1, 1)
 xcurve = linspace(xmin, xmax, 101)
 plot(xcurve, y(xcurve), label='y(x)')
-plot(X, Y, 'ro', label='final population')
+plot(X, Y, 'ro', label='initial population')
 
 # define crossover and mutation functions
 def cxFcn(A, B): return CrossoverFloat(A, B, pc)
 def muFcn(c): return MutationFloat(c, pm)
 
 # run GA
-C, Y, OV = evolve(C, xFcn, oFcn, cxFcn, muFcn, ngen, elite, verb)
+C, Y, OV = Evolve(C, xFcn, oFcn, cxFcn, muFcn, ngen, elite, verb)
 X = [xFcn(c) for c in C]
 
 # print final population
@@ -71,6 +71,7 @@ print '\nbest =', X[0], ' OV =', Y[0]
 # plot points on curve
 subplot(2, 1, 1)
 plot(X, Y, 'k*', label='final population')
+plot(X[0], Y[0], 'gs', label='best')
 Gll('x', 'y', legpos='upper left')
 
 # plot convergence graph

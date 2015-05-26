@@ -6,9 +6,9 @@ from numpy import array, cumsum, zeros
 
 from operators import Fitness, SortPop, RouletteSelect, FilterPairs
 
-def evolve(C, xFcn, oFcn, cxFcn, muFcn, ngen=10, elite=True, verb=False, showC=False):
+def Evolve(C, xFcn, oFcn, cxFcn, muFcn, ngen=10, elite=True, verb=False, showC=False):
     """
-    evolve solves minimisation problems with genetic algorithms
+    Evolve solves minimisation problems with a simple genetic algorithm
     Input:
       C     -- all chromosomes == population
       xFcn  -- 'display' function x(c)
@@ -20,8 +20,8 @@ def evolve(C, xFcn, oFcn, cxFcn, muFcn, ngen=10, elite=True, verb=False, showC=F
       verb  -- verbose
       showC -- also show chromosomes if verbose
     Output:
-      C  -- new population
-      Y  -- new objective values
+      C  -- new population (sorted with best first)
+      Y  -- new objective values (sorted with best first)
       OV -- best objective values during all generations
     """
 
