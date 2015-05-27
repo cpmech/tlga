@@ -146,7 +146,7 @@ def OrdCrossover(A, B, pc=0.8, method='OX1', cut1=None, cut2=None):
                     [v for v in B[     : cut2  ] if not v in m]])
         d = hstack([[v for v in A[cut2 : nbases] if not v in n],
                     [v for v in A[     : cut2  ] if not v in n]])
-        from numpy import array
+        #from numpy import array
         #print 'c =', array(c, dtype=int)
         #print 'd =', array(d, dtype=int), '\n'
         a[cut2:] = c[:nbases-cut2]
