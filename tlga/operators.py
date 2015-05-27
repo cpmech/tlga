@@ -130,25 +130,25 @@ def CrossoverOrder(A, B, pc=0.8, method='OX1', cut1=None, cut2=None):
     """
     if FlipCoin(pc):
         nbases = len(A)
-        if cut1==None: cut1 = RandInt(1, nbases-2)
-        if cut2==None: cut2 = RandInt(cut1, nbases-1)
-        print 'cut1 =', cut1, ', cut2 =', cut2
+        if cut1==None: cut1 = RandInt(1, nbases-1)
+        if cut2==None: cut2 = RandInt(cut1+1, nbases)
+        #print 'cut1 =', cut1, ', cut2 =', cut2
+        if cut1==cut2: raise Exception('problem with cut1 and cut2')
         a, b = zeros(nbases, dtype=int), zeros(nbases, dtype=int)
         a[cut1 : cut2] = A[cut1 : cut2]
         b[cut1 : cut2] = B[cut1 : cut2]
-        print '\na =', a
-        print 'b =', b
+        #print '\na =', a
+        #print 'b =', b
         c = hstack([[v for v in B[cut2 : nbases] if not v in a],
                     [v for v in B[     : cut2  ] if not v in a]])
         d = hstack([[v for v in A[cut2 : nbases] if not v in b],
                     [v for v in A[     : cut2  ] if not v in b]])
-        print 'c =', c
-        print 'd =', d, '\n'
+        #print 'c =', c
+        #print 'd =', d, '\n'
         a[cut2:] = c[:nbases-cut2]
         a[:cut1] = c[nbases-cut2:]
         b[cut2:] = d[:nbases-cut2]
         b[:cut1] = d[nbases-cut2:]
-        #for i in range(cut2, nbases): a[i
     else:
         a, b = A.copy(), B.copy()
     return a, b
