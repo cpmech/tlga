@@ -5,7 +5,7 @@
 from numpy import array
 
 from tlga.random    import Seed
-from tlga.operators import CrossoverOrder
+from tlga.operators import IntCrossover
 
 from testing import CheckVector
 
@@ -23,7 +23,7 @@ print 'A =', A
 print 'B =', B
 print
 
-a, b = CrossoverOrder(A, B, pc=1, cut1=2, cut2=5)
+a, b = IntCrossover(A, B, pc=1, cut1=2, cut2=5)
 
 print 'a =', a
 print 'b =', b
@@ -47,7 +47,7 @@ print 'A =', A
 print 'B =', B
 print
 
-a, b = CrossoverOrder(A, B, pc=1, cut1=3, cut2=6)
+a, b = IntCrossover(A, B, pc=1, cut1=3, cut2=6)
 
 print 'a =', a
 print 'b =', b
@@ -71,7 +71,7 @@ print 'A =', A
 print 'B =', B
 print
 
-a, b = CrossoverOrder(A, B, pc=1)
+a, b = IntCrossover(A, B, pc=1)
 
 print 'a =', a
 print 'b =', b

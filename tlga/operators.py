@@ -2,7 +2,7 @@
 # Use of this source code is governed by a BSD-style
 # license that can be found in the LICENSE file.
 
-from numpy  import zeros, ones, hstack
+from numpy import zeros, ones, hstack, delete, insert
 
 from random import Random, RandInt, FlipCoin
 
@@ -73,9 +73,9 @@ def FilterPairs(S):
     return A, B
 
 
-def CrossoverFloat(A, B, pc=0.8):
+def FltCrossover(A, B, pc=0.8):
     """
-    CrossoverFloat performs the crossover in a population with float point numbers
+    FltCrossover performs the crossover in a pair of individuals with float point numbers
     Input:
       A  -- chromosome of parent
       B  -- chromosome of parent
@@ -94,9 +94,9 @@ def CrossoverFloat(A, B, pc=0.8):
     return a, b
 
 
-def MutationFloat(c, pm=0.01, coef=1.1):
+def FltMutation(c, pm=0.01, coef=1.1):
     """
-    MutationFloat performs mutation in an individual with float point numbers
+    FltMutation performs mutation in an individual with float point numbers
     Input:
       c    -- chromosome
       pm   -- probability of mutation
@@ -113,9 +113,9 @@ def MutationFloat(c, pm=0.01, coef=1.1):
     return c
 
 
-def CrossoverOrder(A, B, pc=0.8, method='OX1', cut1=None, cut2=None):
+def IntCrossover(A, B, pc=0.8, method='OX1', cut1=None, cut2=None):
     """
-    CrossoverOrder performs the crossover in a population with integer numbers
+    IntCrossover performs the crossover in a pair of individuals with integer numbers
     that correspond to a ordered sequence, e.g. traveling salesman problem
     Input:
       A      -- chromosome of parent
@@ -152,3 +152,33 @@ def CrossoverOrder(A, B, pc=0.8, method='OX1', cut1=None, cut2=None):
     else:
         a, b = A.copy(), B.copy()
     return a, b
+
+
+def IntMutation(c, pm=0.01, method='DM', cut1=None, cut2=None, ins=None):
+    """
+    IntMutation performs the mutation in an individual with integer numbers
+    corresponding to a ordered sequence, e.g. traveling salesman problem
+    Input:
+      c      -- chromosome
+      pm     -- probability of mutation
+      method -- DM: displacement mutation
+      cut1   -- position of first cut: use None for random value
+      cut2   -- position of second cut: use None for random value
+      ins    -- position in *cut* slice (v) after which the cut subtour (u) is inserted
+    Output:
+      c -- modified (or not) chromosome
+    """
+    if FlipCoin(pm):
+        nbases = len(c)
+        if cut1==None: cut1 = RandInt(1, nbases-1)
+        if cut2==None: cut2 = RandInt(cut1+1, nbases)
+        if cut1==cut2: raise Exception('problem with cut1 and cut2')
+        u = c[cut1 : cut2]
+        v = delete(c, range(cut1, cut2))
+        if ins==None: ins = RandInt(0, len(v))
+        #print 'u    =', u
+        #print 'v    =', v
+        #print 'cut1 =', cut1, ' cut2 =', cut2, ' ins =', ins
+        c = insert(v, ins+1, u)
+    return c
+
