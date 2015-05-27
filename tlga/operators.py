@@ -111,3 +111,44 @@ def MutationFloat(c, pm=0.01, coef=1.1):
         if FlipCoin(0.5): c[pos] += bmax * coef
         else:             c[pos] -= bmax * coef
     return c
+
+
+def CrossoverOrder(A, B, pc=0.8, method='OX1', cut1=None, cut2=None):
+    """
+    CrossoverOrder performs the crossover in a population with integer numbers
+    that correspond to a ordered sequence, e.g. traveling salesman problem
+    Input:
+      A      -- chromosome of parent
+      B      -- chromosome of parent
+      pc     -- probability of crossover
+      method -- OX1: order crossover # 1
+      cut1   -- position of first cut: use None for random value
+      cut2   -- position of second cut: use None for random value
+    Output:
+      a -- chromosome of offspring
+      b -- chromosome of offspring
+    """
+    if FlipCoin(pc):
+        nbases = len(A)
+        if cut1==None: cut1 = RandInt(1, nbases-2)
+        if cut2==None: cut2 = RandInt(cut1, nbases-1)
+        print 'cut1 =', cut1, ', cut2 =', cut2
+        a, b = zeros(nbases, dtype=int), zeros(nbases, dtype=int)
+        a[cut1 : cut2] = A[cut1 : cut2]
+        b[cut1 : cut2] = B[cut1 : cut2]
+        print '\na =', a
+        print 'b =', b
+        c = hstack([[v for v in B[cut2 : nbases] if not v in a],
+                    [v for v in B[     : cut2  ] if not v in a]])
+        d = hstack([[v for v in A[cut2 : nbases] if not v in b],
+                    [v for v in A[     : cut2  ] if not v in b]])
+        print 'c =', c
+        print 'd =', d, '\n'
+        a[cut2:] = c[:nbases-cut2]
+        a[:cut1] = c[nbases-cut2:]
+        b[cut2:] = d[:nbases-cut2]
+        b[:cut1] = d[nbases-cut2:]
+        #for i in range(cut2, nbases): a[i
+    else:
+        a, b = A.copy(), B.copy()
+    return a, b
