@@ -5,7 +5,7 @@
 from numpy import array
 
 from tlga.random    import Seed
-from tlga.operators import IntMutation
+from tlga.operators import OrdMutation
 
 from testing import CheckVector
 
@@ -20,7 +20,7 @@ c = array([1,2,3,4,5,6,7,8], dtype=int)
 print
 print 'before: c =', c
 
-c = IntMutation(c, pm=1, cut1=2, cut2=5, ins=3)
+c = OrdMutation(c, pm=1, cut1=2, cut2=5, ins=3)
 
 print 'after:  c =', c
 print
@@ -38,7 +38,7 @@ c = array([1,2,3,4,5,6,7,8], dtype=int)
 print
 print 'before: c =', c
 
-c = IntMutation(c, pm=1)
+c = OrdMutation(c, pm=1)
 
 print 'after:  c =', c
 print

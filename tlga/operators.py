@@ -113,9 +113,9 @@ def FltMutation(c, pm=0.01, coef=1.1):
     return c
 
 
-def IntCrossover(A, B, pc=0.8, method='OX1', cut1=None, cut2=None):
+def OrdCrossover(A, B, pc=0.8, method='OX1', cut1=None, cut2=None):
     """
-    IntCrossover performs the crossover in a pair of individuals with integer numbers
+    OrdCrossover performs the crossover in a pair of individuals with integer numbers
     that correspond to a ordered sequence, e.g. traveling salesman problem
     Input:
       A      -- chromosome of parent
@@ -132,19 +132,23 @@ def IntCrossover(A, B, pc=0.8, method='OX1', cut1=None, cut2=None):
         nbases = len(A)
         if cut1==None: cut1 = RandInt(1, nbases-1)
         if cut2==None: cut2 = RandInt(cut1+1, nbases)
-        #print 'cut1 =', cut1, ', cut2 =', cut2
         if cut1==cut2: raise Exception('problem with cut1 and cut2')
         a, b = zeros(nbases, dtype=int), zeros(nbases, dtype=int)
-        a[cut1 : cut2] = A[cut1 : cut2]
-        b[cut1 : cut2] = B[cut1 : cut2]
-        #print '\na =', a
+        m, n = A[cut1 : cut2], B[cut1 : cut2]
+        a[cut1 : cut2] = m
+        b[cut1 : cut2] = n
+        #print '\ncut1 =', cut1, ', cut2 =', cut2
+        #print 'A =', A
+        #print 'B =', B
+        #print 'a =', a
         #print 'b =', b
-        c = hstack([[v for v in B[cut2 : nbases] if not v in a],
-                    [v for v in B[     : cut2  ] if not v in a]])
-        d = hstack([[v for v in A[cut2 : nbases] if not v in b],
-                    [v for v in A[     : cut2  ] if not v in b]])
-        #print 'c =', c
-        #print 'd =', d, '\n'
+        c = hstack([[v for v in B[cut2 : nbases] if not v in m],
+                    [v for v in B[     : cut2  ] if not v in m]])
+        d = hstack([[v for v in A[cut2 : nbases] if not v in n],
+                    [v for v in A[     : cut2  ] if not v in n]])
+        from numpy import array
+        #print 'c =', array(c, dtype=int)
+        #print 'd =', array(d, dtype=int), '\n'
         a[cut2:] = c[:nbases-cut2]
         a[:cut1] = c[nbases-cut2:]
         b[cut2:] = d[:nbases-cut2]
@@ -154,9 +158,9 @@ def IntCrossover(A, B, pc=0.8, method='OX1', cut1=None, cut2=None):
     return a, b
 
 
-def IntMutation(c, pm=0.01, method='DM', cut1=None, cut2=None, ins=None):
+def OrdMutation(c, pm=0.01, method='DM', cut1=None, cut2=None, ins=None):
     """
-    IntMutation performs the mutation in an individual with integer numbers
+    OrdMutation performs the mutation in an individual with integer numbers
     corresponding to a ordered sequence, e.g. traveling salesman problem
     Input:
       c      -- chromosome

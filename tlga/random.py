@@ -3,7 +3,7 @@
 # license that can be found in the LICENSE file.
 
 from numpy import ones
-from numpy.random import seed, random, randint
+from numpy.random import seed, random, randint, shuffle
 
 def Seed(val):
     """
@@ -34,3 +34,18 @@ def FlipCoin(p):
     if p==0.0: return False
     if random()<=p: return True
     return False
+
+
+def Shuffle(x):
+    """
+    Shuffle modifies an array by shuffling its contents
+    """
+    shuffle(x)
+
+
+if __name__ == "__main__":
+    from numpy import array
+    a = array([1,2,3,4,5], dtype=int)
+    print 'before: a =', a
+    Shuffle(a)
+    print 'after:  a =', a

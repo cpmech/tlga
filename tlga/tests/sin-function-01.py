@@ -6,8 +6,8 @@ from numpy import pi, sin, array, linspace
 from pylab import subplot, plot, show
 
 from tlga.random    import Seed, Random
-from tlga.operators import SimpleChromo, FltCrossover, FltMutation
 from tlga.output    import PrintPop, Gll
+from tlga.operators import SimpleChromo, FltCrossover, FltMutation
 from tlga.solver    import Evolve
 
 # initialise random numbers generator
@@ -55,7 +55,7 @@ plot(X, Y, 'ro', label='initial population')
 
 # define crossover and mutation functions
 def cxFcn(A, B): return FltCrossover(A, B, pc)
-def muFcn(c): return FltMutation(c, pm)
+def muFcn(c):    return FltMutation(c, pm)
 
 # run GA
 C, Y, OV = Evolve(C, xFcn, oFcn, cxFcn, muFcn, ngen, elite, verb)
