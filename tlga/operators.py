@@ -2,17 +2,40 @@
 # Use of this source code is governed by a BSD-style
 # license that can be found in the LICENSE file.
 
-from numpy import zeros, ones, hstack, delete, insert
+from numpy import array, zeros, ones, hstack, delete, insert
 
 from random import Random, RandInt, FlipCoin
 
-def SimpleChromo(x, n):
+def SimpleChromo(x, nbases):
     """
-    SimpleChromo splits x into n unequal parts
+    SimpleChromo splits x into 'nbases' unequal parts
+    Input:
+      x -- a single number of a list whose size equals the number of genes
+    Output:
+      c -- the chromosome (numpy.ndarray)
+    Note:
+      If x is a list, ngenes = len(x) and then:
+      If ngenes > 1, each gene is split into 'nbases' and the following
+      chromosome structure is assumed:
+
+          c = [0, 1, 2, ... nbases-1,  0, 1, 2, ... nbases-1]
+               \___________________/   \___________________/
+                      gene # 0               gene # 1
     """
-    vals = Random(n)
-    sumv = sum(vals)
-    return x * vals / sumv
+    if isinstance(x, float):
+        vals = Random(nbases)
+        sumv = sum(vals)
+        return x * vals / sumv
+    if isinstance(x, list): x = array(x)
+    ngenes = len(x)
+    c = zeros(nbases * ngenes)
+    for i, v in enumerate(x):
+        vals = Random(nbases)
+        sumv = sum(vals)
+        a = i * nbases
+        b = a + nbases
+        c[a:b] = v * vals / sumv
+    return c
 
 
 def Fitness(Y):
@@ -186,3 +209,31 @@ def OrdMutation(c, pm=0.01, method='DM', cut1=None, cut2=None, ins=None):
         c = insert(v, ins+1, u)
     return c
 
+
+# test
+if __name__ == "__main__":
+
+    # scalar chromosome
+    x = 5.0
+    c = SimpleChromo(x, 5)
+    X = sum(c)
+    print 'x =', x
+    print 'c =', c
+    print 'X =', X
+    print
+    if abs(x - X) > 1e-15: raise Exception('test failed')
+
+    # array chromosome
+    x = [5.0, 8.0, 7.0]
+    c = SimpleChromo(x, 5)
+    x0 = sum(c[  : 5])
+    x1 = sum(c[ 5:10])
+    x2 = sum(c[10:  ])
+    print 'x =', x
+    print 'c =', c
+    print 'x0 =', x0
+    print 'x1 =', x1
+    print 'x2 =', x2
+    if abs(x0 - 5.0) > 1e-15: raise Exception('test failed')
+    if abs(x1 - 8.0) > 1e-15: raise Exception('test failed')
+    if abs(x2 - 7.0) > 1e-15: raise Exception('test failed')
