@@ -4,23 +4,25 @@
 
 from numpy import array, cumsum, zeros
 
-from operators import Fitness, SortPop, RouletteSelect, FilterPairs, Ranking
+from operators import Fitness, SortPop, Ranking, RouletteSelect, SUSselect, FilterPairs
 
-def Evolve(C, xFcn, oFcn, cxFcn, muFcn, ngen=10, elite=True, verb=False, showC=False, ranking=False, rnkSP=1.2):
+def Evolve(C, xFcn, oFcn, cxFcn, muFcn, ngen=10, elite=True, verb=False, showC=False,
+        sus=False, rnk=False, rnkSP=1.2):
     """
     Evolve solves minimisation problems with a simple genetic algorithm
     Input:
-      C       -- all chromosomes == population
-      xFcn    -- 'display' function x(c)
-      oFcn    -- objective function y(c)
-      cxFcn   -- crossover function cx(c)
-      muFcn   -- mutation function mu(c)
-      ngen    -- number of generations
-      elite   -- use elitism
-      verb    -- verbose
-      showC   -- also show chromosomes if verbose
-      ranking -- use ranking
-      rnkSP   -- ranking selective pressure
+      C     -- all chromosomes == population
+      xFcn  -- 'display' function x(c)
+      oFcn  -- objective function y(c)
+      cxFcn -- crossover function cx(c)
+      muFcn -- mutation function mu(c)
+      ngen  -- number of generations
+      elite -- use elitism
+      verb  -- verbose
+      showC -- also show chromosomes if verbose
+      sus   -- use Stochastic Universal Sampling selection instead of Roulette Wheel
+      rnk   -- use ranking
+      rnkSP -- ranking selective pressure
     Output:
       C  -- new population (sorted with best first)
       Y  -- new objective values (sorted with best first)
@@ -40,7 +42,7 @@ def Evolve(C, xFcn, oFcn, cxFcn, muFcn, ngen=10, elite=True, verb=False, showC=F
     # fitness and probabilities (sorted)
     F = Fitness(Y)
     C, Y, F = SortPop(C, Y, F)
-    if ranking: F = Ranking(ninds, rnkSP)
+    if rnk: F = Ranking(ninds, rnkSP)
     P = F / sum(F)
     M = cumsum(P)
 
@@ -61,7 +63,8 @@ def Evolve(C, xFcn, oFcn, cxFcn, muFcn, ngen=10, elite=True, verb=False, showC=F
             PrintPop(C, Y, xFcn, F, showC=showC)
 
         # selection
-        S = RouletteSelect(M, ninds)
+        if sus: S = SUSselect(M, ninds)
+        else:   S = RouletteSelect(M, ninds)
         idxA, idxB = FilterPairs(S)
 
         # reproduction
@@ -99,7 +102,7 @@ def Evolve(C, xFcn, oFcn, cxFcn, muFcn, ngen=10, elite=True, verb=False, showC=F
 
         # probabilities (sorted)
         C, Y, F = SortPop(C, Y, F)
-        if ranking: F = Ranking(ninds, rnkSP)
+        if rnk: F = Ranking(ninds, rnkSP)
         P = F / sum(F)
         M = cumsum(P)
 
