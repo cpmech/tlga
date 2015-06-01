@@ -91,13 +91,13 @@ def SUSselect(M, n, pb=None):
     Output:
       S -- selected individuals (indices)
     """
-    d = 1.0 / float(n)
-    if pb == None: pb = FltRand(1, 0.0, d)
+    dp = 1.0 / float(n)
+    if pb == None: pb = FltRand(1, 0.0, dp)
     S = zeros(n, dtype=int) # selected individuals
     for i in range(n):
         j = 0
         while pb > M[j]: j += 1
-        pb += d
+        pb += dp
         S[i] = j
     return S
 
