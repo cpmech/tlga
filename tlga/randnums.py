@@ -12,16 +12,16 @@ def Seed(val):
     seed(val)
 
 
-def RandInt(low, high=None, size=None):
+def IntRand(low, high=None, size=None):
     """
-    RandInt generates random integers
+    IntRand generates random integers
     """
     return randint(low, high, size)
 
 
-def Random(n, xa=0.0, xb=1.0):
+def FltRand(n, xa=0.0, xb=1.0):
     """
-    Random generates n numbers between xa and xb
+    FltRand generates n numbers between xa and xb
     """
     return random(n) * (xb - xa) + xa
 

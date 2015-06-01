@@ -5,7 +5,7 @@
 from numpy import pi, sin, array, linspace
 from pylab import subplot, plot, show
 
-from tlga.random    import Seed, Random
+from tlga.randnums  import Seed, FltRand
 from tlga.output    import PrintPop, Gll
 from tlga.operators import SimpleChromo, FltCrossover, FltMutation
 from tlga.solver    import Evolve
@@ -39,7 +39,7 @@ def oFcn(c):
 
 # generate nind numbers between 0 and 4*pi
 xmin, xmax = 0.0, 4.0*pi
-X = Random(ninds, xmin, xmax)
+X = FltRand(ninds, xmin, xmax)
 
 # population == all chromosomes
 C = [SimpleChromo(x, nbases) for x in X] # split x into random parts

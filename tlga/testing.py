@@ -5,6 +5,7 @@
 from numpy import array
 
 def CheckVector(str_a, str_b, a, b, verb=True):
+    a = array(a)
     b = array(b)
     if (a != b).any():
         print '[1;31m ' + str_a + ' != ' + str_b + ':  ', a, ' != ', b, '[0m'

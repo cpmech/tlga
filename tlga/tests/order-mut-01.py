@@ -4,10 +4,9 @@
 
 from numpy import array
 
-from tlga.random    import Seed
+from tlga.randnums  import Seed
 from tlga.operators import OrdMutation
-
-from testing import CheckVector
+from tlga.testing   import CheckVector
 
 # initialise random numbers generator
 #Seed(1234) # use a fixed seed, so every time we run this code we will get the same results
