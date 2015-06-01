@@ -32,7 +32,7 @@ def gtPenalty(a, b, penaltyM=1000.0):
 # objective function
 xmin, xmax = 0.0, 4.0*pi
 def y(x): return -x * sin(x)
-def oFcn(c, nbases):
+def oFcn(c):
     x = sum(c)
     return y(x) + gtPenalty(x, xmin) + gtPenalty(xmax, x)
 
@@ -44,7 +44,7 @@ X = FltRand(ninds, xmin, xmax)
 C = [SimpleChromo(x, nbases) for x in X] # split x into random parts
 
 # first objective values
-Y = [oFcn(c, nbases) for c in C]
+Y = [oFcn(c) for c in C]
 
 # print initial population
 print '\ninitial population:'

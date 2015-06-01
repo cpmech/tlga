@@ -37,7 +37,7 @@ def Evolve(C, xFcn, oFcn, cxFcn, muFcn, ngen=10, elite=True, sus=False, rnk=Fals
     # objective values
     ninds = len(C)
     nbases = len(C[0])
-    Y = array([oFcn(c, nbases) for c in C]) # objective values
+    Y = array([oFcn(c) for c in C]) # objective values
 
     # fitness and probabilities (sorted)
     F = Fitness(Y)
@@ -87,7 +87,7 @@ def Evolve(C, xFcn, oFcn, cxFcn, muFcn, ngen=10, elite=True, sus=False, rnk=Fals
 
         # new population
         C = array(Cnew)
-        Y = array([oFcn(c, nbases) for c in C]) # objective values
+        Y = array([oFcn(c) for c in C]) # objective values
         F = Fitness(Y)
 
         # elitism
