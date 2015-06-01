@@ -4,21 +4,23 @@
 
 from numpy import array, cumsum, zeros
 
-from operators import Fitness, SortPop, RouletteSelect, FilterPairs
+from operators import Fitness, SortPop, RouletteSelect, FilterPairs, Ranking
 
-def Evolve(C, xFcn, oFcn, cxFcn, muFcn, ngen=10, elite=True, verb=False, showC=False):
+def Evolve(C, xFcn, oFcn, cxFcn, muFcn, ngen=10, elite=True, verb=False, showC=False, ranking=False, rnkSP=1.2):
     """
     Evolve solves minimisation problems with a simple genetic algorithm
     Input:
-      C     -- all chromosomes == population
-      xFcn  -- 'display' function x(c)
-      oFcn  -- objective function y(c)
-      cxFcn -- crossover function cx(c)
-      muFcn -- mutation function mu(c)
-      ngen  -- number of generations
-      elite -- use elitism
-      verb  -- verbose
-      showC -- also show chromosomes if verbose
+      C       -- all chromosomes == population
+      xFcn    -- 'display' function x(c)
+      oFcn    -- objective function y(c)
+      cxFcn   -- crossover function cx(c)
+      muFcn   -- mutation function mu(c)
+      ngen    -- number of generations
+      elite   -- use elitism
+      verb    -- verbose
+      showC   -- also show chromosomes if verbose
+      ranking -- use ranking
+      rnkSP   -- ranking selective pressure
     Output:
       C  -- new population (sorted with best first)
       Y  -- new objective values (sorted with best first)
@@ -38,6 +40,7 @@ def Evolve(C, xFcn, oFcn, cxFcn, muFcn, ngen=10, elite=True, verb=False, showC=F
     # fitness and probabilities (sorted)
     F = Fitness(Y)
     C, Y, F = SortPop(C, Y, F)
+    if ranking: F = Ranking(ninds, rnkSP)
     P = F / sum(F)
     M = cumsum(P)
 
@@ -96,6 +99,7 @@ def Evolve(C, xFcn, oFcn, cxFcn, muFcn, ngen=10, elite=True, verb=False, showC=F
 
         # probabilities (sorted)
         C, Y, F = SortPop(C, Y, F)
+        if ranking: F = Ranking(ninds, rnkSP)
         P = F / sum(F)
         M = cumsum(P)
 

@@ -62,6 +62,22 @@ def SortPop(C, Y, F):
     return C, Y, F
 
 
+def Ranking(ninds, sp=1.2):
+    """
+    Ranking computes fitness corresponding to a linear ranking
+    Input:
+      ninds -- number of individuals
+      sp    -- selective pressure; must be inside [1, 2]
+    Output:
+      F -- ranked fitnesses
+    """
+    if sp < 1.0 or sp > 2.0: sp = 1.2
+    F = zeros(ninds)
+    for i in range(ninds):
+        F[i] = 2.0 - sp + 2.0*(sp-1.0)*float(ninds-i-1)/float(ninds-1)
+    return F
+
+
 def RouletteSelect(M, n, sample=None):
     """
     RouletteSelect selects n individuals
@@ -239,9 +255,9 @@ def OrdMutation(c, pm=0.01, method='DM', cut1=None, cut2=None, ins=None):
 if __name__ == "__main__":
 
     from numpy   import cumsum
-    from pylab   import show
+    from pylab   import show, plot
     from testing import CheckVector
-    from output  import PlotProbBins
+    from output  import PlotProbBins, Gll
 
     # scalar chromosome
     print '\n#################### scalar chromosome #######################'
@@ -269,7 +285,7 @@ if __name__ == "__main__":
     if abs(x1 - 8.0) > 1e-14: raise Exception('test failed')
     if abs(x2 - 7.0) > 1e-14: raise Exception('test failed')
 
-    # Roulette wheel selection
+    # roulette wheel selection
     print '\n#################### roulette selection #####################'
     F = array([2.0, 1.8, 1.6, 1.4, 1.2, 1.0, 0.8, 0.6, 0.4, 0.2, 0.0])
     P = F / sum(F)
@@ -288,3 +304,16 @@ if __name__ == "__main__":
     S = SUSselect(M, 6, pb=0.1)
     print 'S =', S
     CheckVector('S','Scor', S, [0, 1, 2, 3, 5, 7])
+
+    # ranking
+    print '\n######################## ranking ############################'
+    n = 11
+    for i, sp in enumerate([1.0, 1.1, 1.5, 2.0]):
+        F = Ranking(n, sp=sp)
+        print 'F(sp=%g) ='%sp, F
+        plot(range(n), F, label='sp=%g'%sp)
+        if i==0: CheckVector('F','Fcor', F, ones(n))
+        #if i==1: CheckVector('F','Fcor', F, [1.1,1.08,1.06,1.04,1.02,1,0.98,0.96,0.94,0.92,0.9])
+        if i==3: CheckVector('F','Fcor', F, [2,1.8,1.6,1.4,1.2,1.0,0.8,0.6,0.4,0.2,0])
+    #Gll('i', 'F')
+    #show()
