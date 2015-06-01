@@ -25,6 +25,11 @@ def Evolve(C, xFcn, oFcn, cxFcn, muFcn, ngen=10, elite=True, verb=False, showC=F
       OV -- best objective values during all generations
     """
 
+    # convert C from list to array
+    if isinstance(C, list):
+        if isinstance(C[0], int): C = array(C, dtype=int)
+        else: C = array(C, dtype=float)
+
     # objective values
     Y = array([oFcn(c) for c in C]) # objective values
     ninds = len(C)

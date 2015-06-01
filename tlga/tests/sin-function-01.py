@@ -10,38 +10,42 @@ from tlga.output    import PrintPop, Gll
 from tlga.operators import SimpleChromo, FltCrossover, FltMutation
 from tlga.solver    import Evolve
 
-# initialise random numbers generator
-Seed(1234) # use a fixed seed, so every time we run this code we will get the same results
-
-# 'display' function
-def xFcn(c): return str(sum(c))
-
-# objective function
-xmin, xmax = 0.0, 4.0*pi
-def y(x): return -x * sin(x)
-def oFcn(c):
-    x = sum(c)
-    if x < xmin or x > xmax: # constraints
-        return 100.0*(1.0+abs(x))
-    return y(x)
-
 # input data
 ninds  = 10    # number of individuals: population size
 nbases = 5     # number of bases in chromosome
 ngen   = 5     # number of generations
 pc     = 0.8   # probability of crossover
 pm     = 0.01  # probability of mutation
-elite  = 1     # use elitism
+elite  = True  # use elitism
 verb   = False # verbose
 
-# population
-X = Random(ninds, xmin, xmax) # generate nind numbers between 0 and 4*pi
-X = array(X, dtype=int)       # truncate values (just for the sake of showing nice numbers)
-X = array(X, dtype=float)     # revert to float
-C = array([SimpleChromo(x, nbases) for x in X])
+# initialise random numbers generator
+Seed(1111) # use a fixed seed, so every time we run this code we will get the same results
 
-# objective values
-Y = array([oFcn(c) for c in C])
+# 'display' function
+def xFcn(c): return str(sum(c))
+
+# 'greater than' penalty function: a must be greater than b
+def gtPenalty(a, b, penaltyM=1000.0):
+    if a > b: return 0.0
+    return penaltyM * (b - a)
+
+# objective function
+xmin, xmax = 0.0, 4.0*pi
+def y(x): return -x * sin(x)
+def oFcn(c):
+    x = sum(c)
+    return y(x) + gtPenalty(x, xmin) + gtPenalty(xmax, x)
+
+# generate nind numbers between 0 and 4*pi
+xmin, xmax = 0.0, 4.0*pi
+X = Random(ninds, xmin, xmax)
+
+# population == all chromosomes
+C = [SimpleChromo(x, nbases) for x in X] # split x into random parts
+
+# first objective values
+Y = [oFcn(c) for c in C]
 
 # print initial population
 print '\ninitial population:'
