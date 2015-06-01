@@ -17,7 +17,6 @@ ngen   = 5     # number of generations
 pc     = 0.8   # probability of crossover
 pm     = 0.01  # probability of mutation
 elite  = True  # use elitism
-verb   = False # verbose
 
 # initialise random numbers generator
 Seed(1111) # use a fixed seed, so every time we run this code we will get the same results
@@ -62,7 +61,7 @@ def cxFcn(A, B): return FltCrossover(A, B, pc)
 def muFcn(c):    return FltMutation(c, pm)
 
 # run GA
-C, Y, OV = Evolve(C, xFcn, oFcn, cxFcn, muFcn, ngen, elite, verb)
+C, Y, OV = Evolve(C, xFcn, oFcn, cxFcn, muFcn, ngen, elite)
 X = [xFcn(c) for c in C]
 
 # print final population

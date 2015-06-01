@@ -6,8 +6,8 @@ from numpy import array, cumsum, zeros
 
 from operators import Fitness, SortPop, Ranking, RouletteSelect, SUSselect, FilterPairs
 
-def Evolve(C, xFcn, oFcn, cxFcn, muFcn, ngen=10, elite=True, verb=False, showC=False,
-        sus=False, rnk=False, rnkSP=1.2):
+def Evolve(C, xFcn, oFcn, cxFcn, muFcn, ngen=10, elite=True, sus=False, rnk=False, rnkSP=1.2,
+        verb=False, showC=False):
     """
     Evolve solves minimisation problems with a simple genetic algorithm
     Input:
