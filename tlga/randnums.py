@@ -23,7 +23,9 @@ def FltRand(n, xa=0.0, xb=1.0):
     """
     FltRand generates n numbers between xa and xb
     """
-    return random(n) * (xb - xa) + xa
+    res = random(n) * (xb - xa) + xa
+    if len(res) == 1: return res[0]
+    return res
 
 
 def FlipCoin(p):
