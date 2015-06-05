@@ -2,7 +2,7 @@
 # Use of this source code is governed by a BSD-style
 # license that can be found in the LICENSE file.
 
-from numpy import array, zeros, ones, hstack, delete, insert
+from numpy import array, zeros, ones, hstack, delete, insert, arange
 
 from randnums import FltRand, IntRand, FlipCoin
 
@@ -241,13 +241,42 @@ def OrdMutation(c, pm=0.01, method='DM', cut1=None, cut2=None, ins=None):
         if cut1==None: cut1 = IntRand(1, nbases-1)
         if cut2==None: cut2 = IntRand(cut1+1, nbases)
         if cut1==cut2: raise Exception('problem with cut1 and cut2')
-        u = c[cut1 : cut2]
-        v = delete(c, range(cut1, cut2))
-        if ins==None: ins = IntRand(0, len(v))
-        #print 'u    =', u
-        #print 'v    =', v
-        #print 'cut1 =', cut1, ' cut2 =', cut2, ' ins =', ins
-        c = insert(v, ins+1, u)
+
+        # lengths and insertion point
+        nc = len(c)
+        ncut = cut2 - cut1 # number of cut items
+        nrem = nc - ncut   # number of remaining items
+        if ins==None: ins = IntRand(0, nrem)
+
+        # auxiliary map: old => new index
+        o2n = arange(nc)
+        for i in range(nc):
+            if   i < cut1: o2n[i] = i      # index is unchanged
+            elif i < cut2: o2n[i] = -1     # mark cut items with -1
+            else:          o2n[i] = i-ncut # shift items after cut to the left
+        k = 1 # increment for index of new cut item
+        for i in range(nc):
+            if o2n[i] > ins:
+                o2n[i] += ncut # shift right to accomodate cut items
+            if o2n[i] < 0:
+                o2n[i] = ins+k # put cut items after 'ins'
+                k += 1
+
+        # copy items to the right place
+        cc = c.copy()
+        for o, n in enumerate(o2n):
+            c[n] = cc[o]
+
+        # this method, using 'insert', apparently fails in some 
+        # versions of numpy and windows
+        if False:
+            u = c[cut1 : cut2]
+            v = delete(c, range(cut1, cut2))
+            if ins==None: ins = IntRand(0, len(v))
+            print 'u    =', u
+            print 'v    =', v
+            print 'cut1 =', cut1, ' cut2 =', cut2, ' ins =', ins
+            c = insert(v, ins+1, u)
     return c
 
 
