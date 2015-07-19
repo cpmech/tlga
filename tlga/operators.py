@@ -10,7 +10,7 @@ def SimpleChromo(x, nbases):
     """
     SimpleChromo splits x into 'nbases' unequal parts
     Input:
-      x -- a single number of a list whose size equals the number of genes
+      x -- a single number or a list whose size equals the number of genes
     Output:
       c -- the chromosome (numpy.ndarray)
     Note:
