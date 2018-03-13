@@ -4,7 +4,7 @@ This repository contains the implementation in Python of the genetic algorithm t
 University of Queensland during the course CIVL4250 (Numerical Methods in Engineering). In this
 course, students learn about Genetic Algorithms as an alternative to optimizers.
 
-See introduction about GAs here: [GA tutorial](http://nbviewer.ipython.org/github/cpmech/CIVL4250py/blob/master/2015/week07/genetic-algo-example01.ipynb)
+See introduction about GAs here: [GA tutorial](https://github.com/cpmech/CIVL4250py/blob/master/genetic-algo/nb-genetic-algo-example01.ipynb)
 
 ## The Traveling salesman problem (small test)
 
@@ -114,7 +114,7 @@ print '\nbest =', X[0], ' OV =', Y[0]
 ### Output
 
 ```
-inal population:
+final population:
 =========================================================
                                                 x       y
 ---------------------------------------------------------
