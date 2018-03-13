@@ -2,8 +2,9 @@
 # Use of this source code is governed by a BSD-style
 # license that can be found in the LICENSE file.
 
-from pylab import grid, xlabel, ylabel, legend
-from pylab import gca, xticks, text, axis, rcParams
+from pylab import close as MPLclose
+from pylab import grid, xlabel, ylabel, legend, savefig
+from pylab import gca, xticks, text, axis, rcParams, rcdefaults
 from matplotlib.patches import Rectangle, FancyArrowPatch
 
 
@@ -125,3 +126,54 @@ def DrawCrossover(A, B, a, b, pos):
     for dir in ['left', 'right', 'top', 'bottom']:
         gca().spines[dir].set_visible(False)
     gca().add_patch(FancyArrowPatch([0.6,0.25], [0.6, 0.2], fc='#9fffde', mutation_scale=30))
+
+
+def SetForPng(proport=0.75, fig_width_pt=455.24, dpi=150, xylabel_fontsize=9,
+        leg_fontsize=8, text_fontsize=9, xtick_fontsize=7, ytick_fontsize=7):
+    """
+    Set figure proportions
+    ======================
+    """
+    inches_per_pt = 1.0/72.27                   # Convert pt to inch
+    fig_width     = fig_width_pt*inches_per_pt  # width in inches
+    fig_height    = fig_width*proport           # height in inches
+    fig_size      = [fig_width,fig_height]
+    params = {
+        'axes.labelsize'  : xylabel_fontsize,
+        'font.size'       : text_fontsize,
+        'legend.fontsize' : leg_fontsize,
+        'xtick.labelsize' : xtick_fontsize,
+        'ytick.labelsize' : ytick_fontsize,
+        'figure.figsize'  : fig_size,
+        'savefig.dpi'     : dpi,
+    }
+    MPLclose()
+    rcdefaults()
+    rcParams.update(params)
+
+
+def Save(filename, ea=None, verbose=True):
+    """
+    Save fig with extra artists
+    ===========================
+    INPUT:
+        ea : extra artists to adjust figure size.
+             it can be a list or a matplotlib object
+    Note:
+        As a workaround, savefig can take bbox_extra_artists keyword (this may
+        only be in the svn version though), which is a list artist that needs
+        to be accounted for the bounding box calculation. So in your case, the
+        below code will work.
+        t1 = ax.text(-0.2,0.5,'text',transform=ax.transAxes)
+        fig.savefig('test.png', bbox_inches='tight', bbox_extra_artists=[t1])
+    """
+    if ea==None:
+        ea = []
+    else:
+        if not isinstance(ea, list):
+            ea = [ea]
+    ea = [x for x in ea if x is not None]
+    savefig (filename, bbox_inches='tight', bbox_extra_artists=ea)
+    if verbose:
+        print('File <[1;34m%s[0m> written'%filename)
+

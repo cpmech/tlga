@@ -1,22 +1,25 @@
-# tlga - Teaching and Learning Genetic Algorithms
+# Examples
 
-This repository contains the implementation in Python of the genetic algorithm taught at The
-University of Queensland during the course CIVL4250 (Numerical Methods in Engineering). In this
-course, students learn about Genetic Algorithms as an alternative to optimizers.
+## Summary
 
-See introduction about GAs here: [GA tutorial](http://nbviewer.ipython.org/github/cpmech/CIVL4250py/blob/master/2015/week07/genetic-algo-example01.ipynb)
+* The Traveling salesman problem (small test)
 
 ## The Traveling salesman problem (small test)
 
-As an example, `tlga` can be used to solve (approximate) the traveling salesman problem pictured
-below. In the figure, each dot corresponds to a city and the shortest path is sought.
+A common transportation problem is to find the shortest path when visiting a number of neighbouring
+places or cities in a geographical region. This is commonly known as the _ravelling salesman
+problem_ or TSP for short.
 
-### Input data
+This is indeed a challenging problem and is known to be [NP-hard](https://en.wikipedia.org/wiki/NP-hardness).
+A genetic algorithm is a suitable approach to solve this problem.
 
-The problem is to connect the following dots such that the total traveled path is the shortest.
+Using a `tlga`, for the cities displayed in the figure below, find the shortest path for a traveller
+who wants to visit all cities and later return to the initial one; any departure city is allowed.
+
+Source code: <a href="travelingsalesman01.py">travelingsalesman01.py</a>
 
 <div id="container">
-<p><img src="./examples/figs/cities1.png"></p>
+<p><img src="./figs/cities1.png"></p>
 </div>
 
 ### Final solution
