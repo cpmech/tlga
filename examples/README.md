@@ -27,7 +27,7 @@ Source code: <a href="travelingsalesman01.py">travelingsalesman01.py</a>
 The final solution looks like:
 
 <div id="container">
-<p><img src="./examples/figs/tsp01.png"></p>
+<p><img src="./figs/tsp01.png"></p>
 </div>
 
 ### Source code
